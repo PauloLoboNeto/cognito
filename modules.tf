@@ -1,7 +1,5 @@
 module "userpools" {
     source       = "./modules/pools"
-    # cluster_name = var.cluster_name
-    # aws_region   = var.aws_region
 }
 
 module "client" {

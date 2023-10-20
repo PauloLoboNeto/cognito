@@ -67,7 +67,9 @@ resource "aws_cognito_user_pool" "user_pool" {
   # }
 
 #  precisa subir o lambda primeiro
-#  lambda_config {
-#     define_auth_challenge = aws_lambda_function.my_custom_auth_function.arn
-#   }
+ lambda_config {
+    define_auth_challenge = data.aws_lambda_function.lambda_prechallenge_cognito.arn
+  }
 }
+
+
