@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: cognito
 
     steps:
     - name: Checkout code
@@ -33,20 +33,26 @@ jobs:
         terraform_version: 1.6.1 
 
     - name: Initialize Terraform
-      run: terraform init
+      run: |
+        cd infra
+        terraform init
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     
     - name: Validate Terraform
-      run: terraform validate
+      run: |
+        cd infra
+        terraform validate
 
     - name: Execute Terraform
       run: |
         if [[ "${{ steps.config.outputs.action }}" == "create" ]]; then
+          cd infra
           terraform plan -var-file="ambientes/hom.tfvars" -out=plan
-          terraform apply -input=false -auto-approve plan
+          terraform apply -input=false --auto-approve plan
         elif [[ "${{ steps.config.outputs.action }}" == "destroy" ]]; then
+          cd infra
           terraform destroy -var-file="ambientes/hom.tfvars" --auto-approve
         else
           echo "Invalid action specified in configuration file."
