@@ -32,18 +32,21 @@ resource "aws_cognito_user_pool" "user_pool" {
     name = "name"
     attribute_data_type = "String"
     required = true
+    mutable  = true
   }
 
   schema {
     name = "email"
     attribute_data_type = "String"
     required = true
+    mutable  = true
   }
 
   schema {
     name = "cpf"
     attribute_data_type = "String"
     required = false
+    mutable  = true
   }
 
   email_configuration {
